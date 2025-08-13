@@ -1,37 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>原料仓库管理系统</title>
   <script>
-    // 解决 API 跨域：拦截并替换目标地址为后端代理
-    const TARGET = "https://api.next.bsapp.com/client";
-    const PROXY = "/api/bsp";
-
-    // 保存原来的 open 方法
-    XMLHttpRequest.prototype.__open = XMLHttpRequest.prototype.open;
-
-    // 重写 open 方法
     XMLHttpRequest.prototype.open = function(method, url) {
       try {
         if (typeof url === 'string' && url.indexOf(TARGET) === 0) {
           var tail = url.slice(TARGET.length);
           arguments[1] = PROXY + tail;
         }
-      } catch (e) {
-        // 忽略错误
-      }
-      return XMLHttpRequest.prototype.__open.apply(this, arguments);
+      } catch (e) {}
+      return _open.apply(this, arguments);
     };
   </script>
-
-  <title>原料仓库管理系统</title>
-  <!-- 预加载/应用样式 -->
-  <link rel="stylesheet" crossorigin href="./assets/index.css">
+  <script type="module" crossorigin src="./assets/index-DrUTNiC.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CGsmhAOk.css">
 </head>
 <body>
   <div id="app"><!--app-html--></div>
-
-  <!-- 应用主脚本 -->
-  <script type="module" crossorigin src="./assets/index.js"></script>
 </body>
 </html>
