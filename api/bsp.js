@@ -3,7 +3,7 @@
 // 作用：绕过浏览器 CORS，支持 GET/POST/OPTIONS，并透传常用头部。
 
 export default async function handler(req, res) {
-  const target = 'https://api.next.bspapp.com/client'; // 如需其它 BSP 路径，在此修改
+  const target = process.env.BSP_API_URL || 'https://api.next.bspapp.com/client'; // 如需其它 BSP 路径，在此修改
 
   // 预检请求直接放行
   if (req.method === 'OPTIONS') {
