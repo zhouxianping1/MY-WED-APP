@@ -4,50 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>原料仓库管理系统</title>
-
-  <!-- 代理到 Vercel Serverless: /api/bsp 以解决 CORS -->
   <script>
-    // 目标后端与本地代理前缀（按你现在的部署保持不变）
-    const TARGET = "https://api.next.bspapp.com";
-    const PROXY  = "/api/bsp";
-
-    // 1) 保存原生 XHR.open，再重写 —— 修复 _open 未定义
+    // 修复 XMLHttpRequest 的 open 方法，避免 _open 未定义错误
     const _open = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function (method, url) {
+    const PROXY = '';
+    const TARGET = '';
+
+    XMLHttpRequest.prototype.open = function(method, url) {
       try {
         if (typeof url === 'string' && url.indexOf(TARGET) === 0) {
-          const tail = url.slice(TARGET.length);
+          var tail = url.slice(TARGET.length);
           arguments[1] = PROXY + tail;
         }
-      } catch (e) {
-        // 静默兜底，避免影响正常流程
-      }
+      } catch (e) {}
       return _open.apply(this, arguments);
     };
-
-    // 2) 若有代码使用 fetch，则一并代理（兜底）
-    const _fetch = window.fetch ? window.fetch.bind(window) : null;
-    if (_fetch) {
-      window.fetch = function (input, init) {
-        try {
-          let url = (typeof input === 'string') ? input : (input && input.url);
-          if (typeof url === 'string' && url.indexOf(TARGET) === 0) {
-            const tail = url.slice(TARGET.length);
-            const newUrl = PROXY + tail;
-            if (typeof input === 'string') {
-              input = newUrl;
-            } else {
-              // 复制原 Request，替换 URL
-              input = new Request(newUrl, input);
-            }
-          }
-        } catch (e) {}
-        return _fetch(input, init);
-      };
-    }
   </script>
-
-  <!-- 下面两个文件名用你当前仓库里的哈希文件名（你截图里是这两个） -->
   <script type="module" crossorigin src="./assets/index-D1azYyZI.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-CGsmhAQk.css">
 </head>
